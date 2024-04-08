@@ -6,18 +6,20 @@ h1{
     grid: display;
     grid-template-columns: 6/6;
     grid-template-rows: 6/6;
+    margin-left: 15px;
     
 }
 
-label,
-input{
-    padding: 5px;
-    margin: 5px;
-}
-
 .form-container{
-    margin: 10px;
-    padding: 10px;
-    border: 10px;
+    padding: 5px;
+    border:  3px solid green;
 }
 
+.spaced{
+    margin-right: 20px;
+}
+
+footer{
+    display: grid;
+    grid-template-columns: 100px, 100px, 100px, 100px, 100px ;
+}

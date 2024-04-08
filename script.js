@@ -20,16 +20,25 @@ function addManga(){
     var publisher = document.getElementById("publisher").value;
     var sbn = document.getElementById("sbn").value;
     var copies = document.getElementById("copies").value;
+
+    //Cheacking if all fields are filled
+    var allFields = title + author + publisher + sbn + copies;
+    if(allFields.trim() === ""){
+        alert("Please fill in all the fields before adding a manga!");
+        return;
+    }
     var manga = new Manga(title, author, publisher, sbn, copies);
     library.push(manga);
 
-    //After pushing book display it in the library
+    //After pushing book display it in the library.
     displayManga();
     //Updating the list of user manga.
     updateMangaList();
+    //Clears the TextFields after the user adds a manga.
+    clearTextField();
  }
 
- /* Remove Function fot eh mangas in the list*/
+ /* Removing a Manga using the prompt by typing in the value of the sbn*/
  function removeManga(){
     var sbn = prompt("Enter the SBN of the Manga to remove: ");
     for (var i = 0; i < library.length; i++){
@@ -41,9 +50,17 @@ function addManga(){
     displayManga();
  }
 
- function displayManga(){
+ function searchManga(){
+    var searchInput = document.getElementById("search").value.ToLowerCase();
+    var filteredManga = library.filter(function(manga){
+        return manga.title.ToLowerCase().includes(searchInput);
+    });
+ }
+
+ function displayManga(filteredManga){
     var mangaList = document.getElementById("mangaList");
     mangaList.innerHTML = "";
+    //BÖRJA HÄR NÄST
     for(var i = 0; i < library.length; i++){
         var tr  = document.createElement("tr");
         tr.innerHTML =`
@@ -55,4 +72,22 @@ function addManga(){
         `;
     mangaList.appendChild(tr);
     }
+ }
+
+ function updateMangaList(filteredManga){
+    var mangaItems = document.getElementById("mangaItems");
+    mangaItems.innerHTML = "";
+    for(var i = 0; i < library.length; i++){
+        var li = document.createElement("li");
+        li.textContent = library[i].title;
+        mangaItems.appendChild(li);
+    }
+ }
+
+ function clearTextField(){
+    document.getElementById("title").value ="";
+    document.getElementById("author").value = "";
+    document.getElementById("publisher").value = "";
+    document.getElementById("sbn").value = "";
+    document.getElementById("copies").value = "";
  }
