@@ -1,3 +1,23 @@
 h1{
     text-align: center;
 }
+
+.container{
+    grid: display;
+    grid-template-columns: 6/6;
+    grid-template-rows: 6/6;
+    
+}
+
+label,
+input{
+    padding: 5px;
+    margin: 5px;
+}
+
+.form-container{
+    margin: 10px;
+    padding: 10px;
+    border: 10px;
+}
+
