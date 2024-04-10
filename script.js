@@ -31,9 +31,9 @@ function addManga(){
     library.push(manga);
 
     //After pushing book display it in the library.
-    displayManga();
+    displayManga(library);
     //Updating the list of user manga.
-    updateMangaList();
+    updateMangaList(library);
     //Clears the TextFields after the user adds a manga.
     clearTextField();
  }
@@ -51,37 +51,47 @@ function addManga(){
  }
 
  function searchManga(){
-    var searchInput = document.getElementById("search").value.ToLowerCase();
+    var searchInput = document.getElementById("search").value.toLowerCase();
     var filteredManga = library.filter(function(manga){
-        return manga.title.ToLowerCase().includes(searchInput);
+        return manga.title.toLowerCase().includes(searchInput);
+
+        
     });
+
+    displayManga(filteredManga);
+    updateMangaList(filteredManga);
  }
 
  function displayManga(filteredManga){
     var mangaList = document.getElementById("mangaList");
     mangaList.innerHTML = "";
     //BÖRJA HÄR NÄST
-    for(var i = 0; i < library.length; i++){
+
+    filteredManga.forEach(function(manga){
+
         var tr  = document.createElement("tr");
         tr.innerHTML =`
-            <td>${library[i].title}</td>
-            <td>${library[i].author}</td>
-            <td>${library[i].publisher}</td>
-            <td>${library[i].sbn}</td>
-            <td>${library[i].copies}</td>
+            <td>${manga.title}</td>
+            <td>${manga.author}</td>
+            <td>${manga.publisher}</td>
+            <td>${manga.sbn}</td>
+            <td>${manga.copies}</td>
         `;
-    mangaList.appendChild(tr);
-    }
+        mangaList.appendChild(tr);
+    });
+    
  }
 
  function updateMangaList(filteredManga){
-    var mangaItems = document.getElementById("mangaItems");
-    mangaItems.innerHTML = "";
-    for(var i = 0; i < library.length; i++){
+
+    var mangaItemsElement = document.getElementById("mangaItems");
+    mangaItemsElement.innerHTML="";
+
+    filteredManga.forEach(function(manga) {
         var li = document.createElement("li");
-        li.textContent = library[i].title;
-        mangaItems.appendChild(li);
-    }
+        li.textContent = manga.title;
+        mangaItemsElement.appendChild(li);
+    });
  }
 
  function clearTextField(){
