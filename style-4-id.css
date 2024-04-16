@@ -10,3 +10,9 @@
 #favorites-btn{
     background-color: yellow;
 }
+
+#mangaItems,
+#mangaList{
+    max-height: 200px;
+    overflow-y: auto;
+}
