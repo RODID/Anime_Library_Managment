@@ -1,75 +1,92 @@
 // script.js
 
-
-function Manga(title, author, publisher, sbn, copies){
-    this.title = title;
-    this.author = author;
-    this.publisher = publisher;
-    this.sbn = sbn;
-    this.copies = copies;
-}
-
-
 //This is a library array for the the added Mangas
 var library = [];
 
 /*Add function for the Mangas*/
 function addManga(){
-    var title = document.getElementById("title").value;
-    var author = document.getElementById("author").value;
-    var publisher = document.getElementById("publisher").value;
-    var sbn = document.getElementById("sbn").value;
-    var copies = document.getElementById("copies").value;
+    let title = document.getElementById("title").value;
+    let author = document.getElementById("author").value;
+    let publisher = document.getElementById("publisher").value;
+    let sbn = document.getElementById("sbn").value;
+    let copies = document.getElementById("copies").value;
 
     //Cheacking if all fields are filled
-    var allFields = title + author + publisher + sbn + copies;
+    const allFields = title + author + publisher + sbn + copies;
     if(allFields.trim() === ""){
+        
         alert("Please fill in all the fields before adding a manga!");
         return;
     }
-    var manga = new Manga(title, author, publisher, sbn, copies);
+    let manga = new Manga(title, author, publisher, sbn, copies);
     library.push(manga);
 
     //After pushing book display it in the library.
     displayManga(library);
-    //Updating the list of user manga.
-    updateMangaList(library);
+    //saving the manga in the list
+    saveMangaList();
     //Clears the TextFields after the user adds a manga.
     clearTextField();
  }
 
  /* Removing a Manga using the prompt by typing in the value of the sbn*/
  function removeManga(){
-    var sbn = prompt("Enter the SBN of the Manga to remove: ");
-    for (var i = 0; i < library.length; i++){
+    let sbn = prompt("Enter the SBN of the Manga to remove: ");
+    for (let i = 0; i < library.length; i++){
         if (library[i].sbn === sbn){
             library.splice(i, 1);
             break; 
         }
     }
-    displayManga();
+    displayManga(library);
+    saveMangaList();
  }
 
- function searchManga(){
-    var searchInput = document.getElementById("search").value.toLowerCase();
-    var filteredManga = library.filter(function(manga){
-        return manga.title.toLowerCase().includes(searchInput);
+ function addToFavorites(){
+    let sbn = prompt("Enter the SBN of your favorite Manga to add: ")
 
-        
+    for(let i = 0; i < library.length; i++){
+        if (library[i].sbn ===sbn){
+            library[i].favorite = true;
+            break;
+        }
+    }
+
+    displayManga(library);
+    saveMangaList();
+}
+
+ function searchManga(){
+    let searchInput = document.getElementById("search").value.trim().toLowerCase();
+
+    if (searchInput === ""){
+        displayManga(library)
+        updateMangaList(library)
+        return;
+    }
+
+    let filteredManga = library.filter(function(manga){
+        return manga.title.toLowerCase().includes(searchInput) ||
+               manga.author.toLowerCase().includes(searchInput);
     });
 
     displayManga(filteredManga);
     updateMangaList(filteredManga);
+    saveMangaList();
  }
 
  function displayManga(filteredManga){
-    var mangaList = document.getElementById("mangaList");
+    let mangaList = document.getElementById("mangaList");
     mangaList.innerHTML = "";
-    //BÖRJA HÄR NÄST
 
-    filteredManga.forEach(function(manga){
+    library.forEach(function(manga){
 
-        var tr  = document.createElement("tr");
+        let tr  = document.createElement("tr");
+
+        if(manga.favorite){
+            tr.style.color = "red";
+        }
+
         tr.innerHTML =`
             <td>${manga.title}</td>
             <td>${manga.author}</td>
@@ -77,6 +94,10 @@ function addManga(){
             <td>${manga.sbn}</td>
             <td>${manga.copies}</td>
         `;
+        
+        tr.addEventListener("click", function(){
+            console.log("Manga selected: ", manga);
+        });
         mangaList.appendChild(tr);
     });
     
@@ -84,15 +105,30 @@ function addManga(){
 
  function updateMangaList(filteredManga){
 
-    var mangaItemsElement = document.getElementById("mangaItems");
+    let mangaItemsElement = document.getElementById("mangaItems");
     mangaItemsElement.innerHTML="";
 
     filteredManga.forEach(function(manga) {
-        var li = document.createElement("li");
+        let li = document.createElement("li");
         li.textContent = manga.title;
         mangaItemsElement.appendChild(li);
     });
  }
+
+
+ window.onload = function(){
+    let savedLibrary = JSON.parse(localStorage.getItem('library'));
+    if (savedLibrary){
+        library = savedLibrary;
+        displayManga(library)
+        updateMangaList(library);
+    }
+ }
+
+ function saveMangaList(){
+    localStorage.setItem('library', JSON.stringify(library));
+ }
+
 
  function clearTextField(){
     document.getElementById("title").value ="";
