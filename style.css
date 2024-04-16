@@ -11,10 +11,13 @@ h1{
 }
 
 .form-container{
-    display: grid;
     padding: 5px;
     border:  3px solid green;
-    text-align: center;
+}
+
+.form-controll{
+    width: 50%;
+    margin: 5px;
 }
 
 
@@ -24,14 +27,13 @@ footer{
 }
 
 .btn-function{
-    margin: 15px;
-    border: 3px solid crimson;
-    padding: 5px;
+    border: 5px solid crimson;
+    text-align: center;
+    background-color: grey;
 }
 
 button{
     margin:5px;
     border: 3px solid black;
     padding:10px;
-    
 }
