@@ -1,0 +1,13 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.search-div{
+    padding: 3px solid black;
+}

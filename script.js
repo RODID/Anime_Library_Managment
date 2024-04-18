@@ -18,6 +18,12 @@ function addManga(){
         alert("Please fill in all the fields before adding a manga!");
         return;
     }
+    
+    //
+    if(library.some(manga => manga.sbn === sbn)){
+        alert("A manga witht he same SBN already exists in the library!")
+        return;
+    }
     let manga = new Manga(title, author, publisher, sbn, copies);
     library.push(manga);
 
@@ -54,6 +60,11 @@ function addManga(){
 
     displayManga(library);
     saveMangaList();
+}
+
+function mangaList(){
+    //öpnar manga-list.html sidan i en ny sida.
+    window.open('manga-list.html', '_blank');
 }
 
  function searchManga(){
